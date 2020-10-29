@@ -1,0 +1,22 @@
+{
+  "name": "tut07",
+  "version": "1.0.0",
+  "description": "SAD test",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "mongodb": "^3.6.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.6",
+    "node-sass": "^4.14.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon --inspect src/server.js",
+    "watch": "node-sass -w src/resources/scss/ -o src/public/css/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "minhle",
+  "license": "ISC"
+}

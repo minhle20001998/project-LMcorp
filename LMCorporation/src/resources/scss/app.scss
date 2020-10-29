@@ -1,0 +1,245 @@
+* {
+	 margin: 0;
+	 padding: 0;
+	 box-sizing: border-box;
+}
+ body {
+	 display: flex;
+	 flex-direction: column;
+	 justify-content: center;
+	 align-items: center;
+	 font-size: 10px;
+	 width: 100%;
+	 background-color: #ffffff;
+}
+ a {
+	 text-decoration: none;
+	 color: white;
+}
+ .content {
+	 display: flex;
+	 flex-direction: column;
+	 justify-content: center;
+	 align-items: center;
+	 width: 1500px;
+}
+ nav {
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 width: 100vw;
+	 height: 80px;
+	 background-color: #1e262c;
+}
+ nav .nav-content {
+	 display: flex;
+	 justify-content: space-between;
+	 align-items: center;
+	 padding: 15px 45px 15px 45px;
+	 width: 1500px;
+	 height: 80px;
+	 color: white;
+}
+ nav .left-nav {
+	 display: flex;
+	 justify-content: space-between;
+	 align-items: center;
+	 cursor: pointer;
+}
+ nav .left-nav i {
+	 font-size: 3rem;
+}
+ nav .left-nav p {
+	 font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	 font-size: 1.8rem;
+	 margin-left: 10px;
+}
+ nav .right-nav {
+	 display: flex;
+	 justify-content: space-between;
+	 align-items: center;
+	 width: 200px;
+	 font-size: 1.2rem;
+}
+ nav .right-nav .notifi, nav .right-nav .mess {
+	 position: relative;
+}
+ nav .right-nav .noti-num {
+	 position: absolute;
+	 right: -10px;
+	 top: -5px;
+	 width: 10px;
+	 height: 10px;
+	 border-radius: 100%;
+	 background-color: red;
+}
+ nav .right-nav .avatar {
+	 width: 30px;
+	 height: 30px;
+	 border-radius: 100%;
+	 background-image: url(img/tròn.jpg);
+	 background-repeat: no-repeat;
+	 background-position: center;
+	 background-size: cover;
+	 box-shadow: 0px 0px 10px white;
+}
+ nav .right-nav .notifi:hover, nav .right-nav .mess:hover, nav .right-nav .setting {
+	 cursor: pointer;
+}
+ nav .right-nav .notifi:hover, nav .right-nav .mess:hover, nav .right-nav .setting:hover {
+	 color: red;
+}
+ section {
+	 background-color: #e2e2e2;
+	 padding-top: 0.1rem;
+	 display: flex;
+	 flex-direction: row;
+	 justify-content: space-between;
+	 width: 100%;
+	 height: fit-content;
+}
+ section .left-col {
+	 width: 20%;
+	 height: auto;
+	 background-color: white;
+}
+ section .left-col .background {
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 border-radius: 0.2rem;
+	 width: 100%;
+	 height: 150px;
+	 background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.699)), url(img/star.jpg);
+	 background-repeat: no-repeat;
+	 background-position: center;
+	 background-size: cover;
+}
+ section .left-col .background .background-content {
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 flex-direction: column;
+}
+ section .left-col .background .background-content .big-avatar {
+	 width: 70px;
+	 height: 70px;
+	 margin-bottom: 0.5rem;
+	 border-radius: 100%;
+	 background-image: url(img/tròn.jpg);
+	 border: 2px solid white;
+	 background-repeat: no-repeat;
+	 background-position: center;
+	 background-size: cover;
+}
+ section .left-col .background .background-content .client-name {
+	 font-size: 1.3rem;
+	 font-weight: bold;
+	 color: white;
+	 text-shadow: 0 0 5px black;
+}
+ section .left-col .content-list {
+	 display: flex;
+	 flex-direction: column;
+	 padding: 0.2rem;
+}
+ section .left-col .content-list .home_div, section .left-col .content-list .employee_div, section .left-col .content-list .project_div, section .left-col .content-list .management_div {
+	 margin-top: 0.2rem;
+	 font-family: "Times New Roman", Times, serif;
+}
+ section .left-col .content-list a {
+	 color: black;
+}
+ section .left-col .content-list .title {
+	 display: flex;
+	 align-items: center;
+	 padding-left: 0.6rem;
+	 height: 2.5rem;
+	 font-size: 1.1rem;
+	 background-color: #252525;
+	 color: #e2e2e2;
+	 border-radius: 0.5rem;
+}
+ section .left-col .content-list .title i {
+	 margin-right: 0.5rem;
+}
+ section .left-col .content-list .child {
+	 padding: 0.5rem 0 0.5rem 0;
+}
+ section .left-col .content-list .child div {
+	 padding-left: 1rem;
+	 height: 2rem;
+	 font-size: 1rem;
+}
+ section .left-col .content-list .child div i {
+	 color: #252525;
+	 margin-right: 0.5rem;
+}
+ section .left-col .content-list .employees, section .left-col .content-list .role_right, section .left-col .content-list .projects, section .left-col .content-list .pay, section .left-col .content-list .reward, section .left-col .content-list .warning, section .left-col .content-list .kick {
+	 display: flex;
+	 align-items: center;
+}
+ section .left-col .content-list .employees:hover, section .left-col .content-list .role_right:hover, section .left-col .content-list .projects:hover, section .left-col .content-list .pay:hover, section .left-col .content-list .reward:hover, section .left-col .content-list .warning:hover, section .left-col .content-list .kick:hover {
+	 background-color: #c2c2c2;
+	 border-radius: 0.5rem;
+}
+ section .right-col {
+	 width: 80%;
+	 height: fit-content;
+	 background-color: #e2e2e2;
+}
+ footer {
+	 font-family: "Times New Roman", Times, serif;
+	 text-shadow: 10px 10px 1rem black;
+	 background-color: #1e262c;
+	 color: #cccccc;
+	 margin-top: 0.3rem;
+	 display: flex;
+	 flex-direction: column;
+	 justify-content: center;
+	 align-items: center;
+	 width: 100%;
+	 height: fit-content;
+	 padding: 2rem 1rem 1rem 1rem;
+}
+ footer .top_footer {
+	 display: flex;
+	 flex-direction: row;
+	 justify-content: center;
+	 align-items: center;
+	 font-size: 1.2rem;
+	 font-weight: bold;
+}
+ footer .top_footer a {
+	 color: #d4d4d4;
+	 margin-right: 6rem;
+	 margin-left: 6rem;
+}
+ footer .top_footer a:hover {
+	 color: white;
+}
+ footer .para {
+	 line-height: 2rem;
+	 font-size: 1rem;
+	 padding: 2.5rem 1rem 1rem 2rem;
+	 display: flex;
+	 flex-direction: column;
+	 justify-content: center;
+	 align-items: center;
+}
+ footer .para .contact_icon {
+	 font-size: 1.5rem;
+	 margin-top: 2.5rem;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+}
+ footer .para .contact_icon a {
+	 margin: 0px 2rem 0 2rem;
+}
+ @media only screen and (max-width: 1495px) {
+	 .content {
+		 width: 100vw;
+	}
+}
+ 
