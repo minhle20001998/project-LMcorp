@@ -4,12 +4,16 @@
   "description": "SAD test",
   "main": "server.js",
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
+    "moment": "^2.29.1",
     "mongodb": "^3.6.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.6",
-    "node-sass": "^4.14.1"
+    "mysql": "^2.18.1",
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.6"
   },
   "devDependencies": {},
   "scripts": {

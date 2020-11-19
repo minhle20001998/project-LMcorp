@@ -2,12 +2,13 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Homepage</title>
     <link rel="stylesheet" href="/css/app.css" />
-    <script src="//cdn.jsdelivr.net/npm/less"></script>
-    <script src="script.js" defer></script>
+    <link href="//db.onlinewebfonts.com/c/860c3ec7bbc5da3e97233ccecafe512e?family=Circular+Std+Book" rel="stylesheet"
+        type="text/css" />
+    {{!-- <script src="../../../public/scripts/home.js" defer></script> --}}
     <script src="https://kit.fontawesome.com/26d4a64054.js" defer></script>
 </head>
 
@@ -27,20 +28,27 @@
                         <i class="fas fa-home"></i>
                         Trang Chủ
                     </p>
+                    <div class="home child">
+                        <div class="homepage">
+                            <i class="fas fa-dot-circle"></i>
+                            <a href="/">Dashboard</a>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="employee_div">
                     <p class="title">
                         <i class="fas fa-user-alt"></i>
-                        Nhân Viên
+                        Nhân viên
                     </p>
                     <div class="employee child">
                         <div class="employees">
                             <i class="fas fa-dot-circle"></i>
-                            <a href="">Quản lí nhân viên</a>
+                            <a href="/employee">Quản lí nhân viên</a>
                         </div>
                         <div class="role_right">
                             <i class="fas fa-dot-circle"></i>
-                            <a href=""> Vai trò và đặc quyền </a>
+                            <a href=""> Cấp quyền truy cập </a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +71,7 @@
                 <div class="management_div">
                     <p class="title">
                         <i class="fas fa-suitcase"></i>
-                        Nhân sự
+                        Khả năng làm việc
                     </p>
                     <div class="management child">
                         <div class="reward">
@@ -88,7 +96,7 @@
         </div>
     </section>
     {{>footer}}
-
+   
 </body>
 
 </html>

@@ -21,3 +21,14 @@
         </div>
     </div>
 </nav>
+
+<script>
+    test();
+    function test() {
+        const a = document.querySelector(".setting");
+        a.addEventListener('click', () => {
+            document.cookie = "name" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            location.reload();
+        })
+    }
+</script>

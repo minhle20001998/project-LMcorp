@@ -1,0 +1,206 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  width: 100%;
+  background-color: #ffffff;
+  font-family: "CircularStd", sans-serif; }
+
+a {
+  text-decoration: none;
+  color: white; }
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80px;
+  background-color: #1e262c; }
+
+nav .nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 45px 15px 45px;
+  width: 1500px;
+  height: 80px;
+  color: white; }
+
+nav .left-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer; }
+
+nav .left-nav i {
+  font-size: 3rem; }
+
+nav .left-nav p {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.8rem;
+  margin-left: 10px; }
+
+section {
+  width: 1500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.699)), url("https://www.glassdoor.com/blog/app/uploads/sites/2/iStock-504243026-e1514926306494-1024x450.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 5rem 0 5rem 0; }
+
+.box {
+  width: 320px;
+  height: 450px;
+  background-color: #e7e7e7;
+  color: black;
+  box-sizing: border-box;
+  box-shadow: 0 0 15px black;
+  padding: 70px 30px; }
+
+h1 {
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  font-size: 1.8rem; }
+
+.box p {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+  font-weight: bold; }
+
+.box #wrong {
+  color: #ff3333;
+  display: none;
+  margin-bottom: 1rem; }
+
+.box input {
+  width: 100%;
+  margin-bottom: 20px; }
+
+.box a {
+  color: rgba(202, 98, 0, 0.719);
+  font-weight: bold; }
+
+.box .error {
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  color: #c40000; }
+
+.box .link {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+
+.box input[type="text"] {
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  color: black;
+  height: 40px; }
+
+.box input[type="password"] {
+  border: none;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+  outline: none;
+  color: black;
+  height: 40px; }
+
+.box .submit_div {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 40px;
+  background: #1e262c;
+  color: white;
+  font-size: 1rem;
+  width: 80px;
+  border-radius: 5px; }
+
+button:hover {
+  cursor: pointer;
+  background-color: #db7500;
+  color: black;
+  box-shadow: 0 0 15px rgba(105, 105, 105, 0.24); }
+
+footer {
+  font-family: "Times New Roman", Times, serif;
+  text-shadow: 10px 10px 1rem black;
+  background-color: #1e262c;
+  color: #cccccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  padding: 2rem 1rem 1rem 1rem; }
+
+footer i {
+  color: #d4d4d4;
+  font-size: 1rem; }
+
+footer i:hover {
+  color: white; }
+
+footer .top_footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold; }
+
+footer .top_footer a {
+  color: #d4d4d4;
+  margin-right: 6rem;
+  margin-left: 6rem; }
+
+footer .top_footer a:hover {
+  color: white; }
+
+footer .para {
+  line-height: 2rem;
+  padding: 2.5rem 1rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+footer .para p {
+  font-size: 1.1rem; }
+
+footer .para .contact_icon {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+footer .para .contact_icon a {
+  margin: 0px 2rem 0 2rem; }
+
+@media only screen and (max-width: 1495px) {
+  section {
+    width: 100%; } }
