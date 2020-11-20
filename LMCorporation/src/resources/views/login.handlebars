@@ -8,7 +8,7 @@
     <link href="//db.onlinewebfonts.com/c/860c3ec7bbc5da3e97233ccecafe512e?family=Circular+Std+Book" rel="stylesheet"
         type="text/css" />
     <script src="//cdn.jsdelivr.net/npm/less"></script>
-    {{!-- <script src="script.js" defer></script> --}}
+    <script src="/scripts/login.js" defer></script>
     <script src="https://kit.fontawesome.com/26d4a64054.js" defer></script>
     <title>Login</title>
 </head>
@@ -53,48 +53,6 @@
     {{>footer}}
 
     <script>
-        login();
-        const name = document.querySelector("#username");
-        const pw = document.querySelector("#password");
-        async function login() {
-            const submit = document.querySelector("#submit");
-            submit.addEventListener('click', fetchData);
-
-        }
-
-        async function fetchData() {
-            let url = "http://localhost:3000/login";
-            const defaultParams = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-
-            }
-
-            defaultParams.body = JSON.stringify({
-                username: name.value,
-                password: pw.value
-            });
-            console.log(defaultParams);
-            const myResponse = await fetch(url, defaultParams);
-            const myJson = await myResponse.json();
-            if (myJson.status == "OK") {
-                window.location.href = myJson.redirect;
-            }
-            else if (myJson.status == "WRONG") {
-                addStatus();
-            }
-        }
-
-        function addStatus() {
-            const wrong_status = document.querySelector("#wrong");
-            wrong_status.style.display = "block";
-
-        }
-
-
-
 
     </script>
 

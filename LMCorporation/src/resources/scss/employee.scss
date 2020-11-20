@@ -188,6 +188,7 @@ section .left-col .content-list .employees,
 section .left-col .content-list .role_right,
 section .left-col .content-list .projects,
 section .left-col .content-list .pay,
+section .left-col .content-list .clients,
 section .left-col .content-list .reward,
 section .left-col .content-list .warning,
 section .left-col .content-list .kick {
@@ -203,6 +204,7 @@ section .left-col .content-list .employees:hover,
 section .left-col .content-list .role_right:hover,
 section .left-col .content-list .projects:hover,
 section .left-col .content-list .pay:hover,
+section .left-col .content-list .clients:hover,
 section .left-col .content-list .reward:hover,
 section .left-col .content-list .warning:hover,
 section .left-col .content-list .kick:hover {
@@ -211,6 +213,7 @@ section .left-col .content-list .kick:hover {
 }
 section .right-col {
   width: 80%;
+  padding-bottom: 5rem;
   height: fit-content;
   background-color: #e2e2e2;
 }
