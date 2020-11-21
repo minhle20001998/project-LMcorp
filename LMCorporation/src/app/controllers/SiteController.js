@@ -116,7 +116,6 @@ class NewsController {
         }
     }
     clientAll(req, res) {
-        console.log(req.body);
         const queryClientAll = 'SELECT * FROM customer';
         if (req.body.need == `getAll`) {
             db.query(queryClientAll, (err, dbClient, fields) => {
@@ -126,6 +125,37 @@ class NewsController {
                 res.json(dbClient);
             })
         }
+    }
+
+    projectAll(req, res) {
+        const queryProjectAll = `SELECT p.ProjectID, title,c.name,price,deadline FROM project AS p
+        INNER JOIN customer AS c
+        ON p.CustomerID = c.CustomerID;`;
+        const result = [];
+        // if (req.body.need == `getAll`) {
+        db.query(queryProjectAll, (err, dbproject, fields) => {
+            for (let i = 0; i < dbproject.length; i++) {
+                const project = dbproject[i];
+                const projectID = project.ProjectID;
+                const employeeQuery =
+                    `SELECT e.EmployeeID, name from employee AS e 
+                    INNER JOIN project_team AS p 
+                    ON e.EmployeeID = p.EmployeeID 
+                    WHERE projectID = ${projectID}`;
+                db.query(employeeQuery, (err, dbEmployees, fields) => {
+                    if (err) throw err;
+                    dbproject[i].employees = dbEmployees;
+                    console.log(project);
+                    result.push(project);
+                    if (result.length == dbproject.length) {
+
+                        res.json(result);
+                    }
+
+                })
+            }
+        });
+        // }
     }
 
     employeeEdit(req, res) {
@@ -143,11 +173,38 @@ class NewsController {
         })
     }
 
+    clientEdit(req, res) {
+        const editInfo = req.body;
+        const queryUpdate = `UPDATE customer
+        SET Name = "${editInfo.name}", PhoneNumber = "${editInfo.phone}",
+        Email = "${editInfo.email}" , Address = "${editInfo.address}"
+        WHERE CustomerID = ${editInfo.id};`;
+        db.query(queryUpdate, (err, update, fields) => {
+            if (err) throw err;
+            res.json({
+                status: "success"
+            });
+        })
+    }
+
     employeeAdd(req, res) {
         const addInfo = req.body;
         const date = new Date(addInfo.DOB).toISOString().slice(0, 19).replace('T', ' ');
         const queryInsert = `INSERT INTO employee(Name,PhoneNumber,Email,DOB,Address)
         VALUES("${addInfo.name}","${addInfo.phone}","${addInfo.email}","${date}","${addInfo.address}");`;
+        db.query(queryInsert, (err, update, fields) => {
+            if (err) throw err;
+            res.json({
+                status: "success"
+            })
+        })
+    }
+
+    clientAdd(req, res) {
+        const addInfo = req.body;
+        console.log(addInfo);
+        const queryInsert = `INSERT INTO customer(Name,PhoneNumber,Email,Address)
+        VALUES("${addInfo.name}","${addInfo.phone}","${addInfo.email}","${addInfo.address}");`;
         db.query(queryInsert, (err, update, fields) => {
             if (err) throw err;
             res.json({
@@ -173,6 +230,22 @@ class NewsController {
             })
         })
     }
+
+    clientDelete(req, res) {
+        const deleteID = req.body.id;
+        const queryDelete =
+            `
+        DELETE FROM Project WHERE CustomerID = ${deleteID};
+        DELETE FROM Customer WHERE CustomerID =${deleteID};`;
+
+        db.query(queryDelete, (err, deleteEmp, fields) => {
+            if (err) throw err;
+            res.json({
+                status: "success"
+            })
+        })
+    }
+
 
 
 

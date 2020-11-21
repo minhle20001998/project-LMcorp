@@ -140,7 +140,7 @@ function openEdit(purpose, idName) {
 }
 
 function getIDFromName(ID) {
-    const cutID = ID.replace("_edit","");
+    const cutID = ID.replace("_edit", "");
     return cutID;
 }
 
@@ -332,7 +332,12 @@ async function handleAddButton() {
         }, { once: true });
     }
 }
-
+function removeEventListener() {
+    const edit_button = document.querySelector('.edit_button');
+    if (edit_button != null) {
+        edit_button.removeEventListener('click', handleEdit);
+    }
+}
 async function deleteEmployee(ID) {
     url = "http://localhost:3000/employee/delete";
     body = {
