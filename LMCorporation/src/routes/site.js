@@ -22,6 +22,9 @@ function checkAuthen(req, res, next) {
 
 
 router.use('/login', siteController.login);
+router.use('/register/check', siteController.registerCheck);
+router.use('/register', siteController.register);
+
 
 router.use('/employee/all',checkAuthen,siteController.employeeAll);
 router.use('/employee/edit',checkAuthen,siteController.employeeEdit);
@@ -30,6 +33,9 @@ router.use('/employee/delete',checkAuthen,siteController.employeeDelete);
 router.use('/employee', checkAuthen, siteController.employee);
 
 router.use('/project/all',checkAuthen,siteController.projectAll);
+router.use('/project/edit',checkAuthen,siteController.projectEdit);
+router.use('/project/add',checkAuthen,siteController.projectAdd);
+router.use('/project/delete',checkAuthen,siteController.projectDelete);
 router.use('/project',checkAuthen,siteController.project);
 
 router.use('/client/all',checkAuthen,siteController.clientAll);

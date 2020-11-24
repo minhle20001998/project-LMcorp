@@ -1,32 +1,42 @@
 function main() {
     generateTable();
-    addCustomer();
+    clientNameDropBox();
+    addProject();
 }
 main();
-async function fetchData(url, body) {
-    const defaultParams = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
 
-    }
-    defaultParams.body = JSON.stringify(body);
-    const myResponse = await fetch(url, defaultParams);
-    const myJson = await myResponse.json();
 
-    return myJson
+async function clientNameDropBox() {
+    let url = "http://localhost:3000/client/all";
+    //fetch data
+    const clients = await fetchData(url, {
+        need: "name"
+    });
+    console.log(clients);
+    //add data to drop box
+    const selectDiv = document.querySelector("#customers");
+    clients.forEach(element => {
+        const option = document.createElement("option");
+        const cName = element.name;
+        const cID = element.customerID;
+        option.value = cName + "_" + cID;
+        option.textContent = cName;
+        selectDiv.appendChild(option);
+    })
 }
+
 async function generateTable() {
     console.log('generate');
-    let url = "http://localhost:3000/client/all";
+    let url = "http://localhost:3000/project/all";
     let body = {
         need: "getAll"
     };
-    const clients = await fetchData(url, body);
-    console.log(clients);
+    const projects = await fetchData(url, body);
+    projects.sort((a, b) => {
+        return a.ProjectID - b.ProjectID;
+    })
     const table = document.querySelector(".table");
-    clients.forEach(element => {
+    projects.forEach(element => {
         const row = generateRow(element);
         table.appendChild(row);
     })
@@ -34,53 +44,91 @@ async function generateTable() {
 function generateRow(data) {
     const table_row = document.createElement('tr');
     table_row.classList.add('t_row');
-    table_row.setAttribute('id', `row_${data["CustomerID"]}`);
+    table_row.setAttribute('id', `row_${data["ProjectID"]}`);
     for (const key in data) {
 
         let keyData = data[key];
+        if (key == "price") {
+            keyData = "$ " + data[key];
+        }
 
+        if (key == "employees") {
+            let stringEmloyee = "";
+            data[key].forEach(element => {
+                const employee = element.name + "-" + element.EmployeeID;
+                stringEmloyee += employee + ", ";
+                console.log(stringEmloyee);
+            })
+            keyData = stringEmloyee.substring(0, stringEmloyee.length - 2);
+        }
+        if (key == "deadline") {
+            dateRaw = new Date(data[key]);
+
+            year = dateRaw.getFullYear();
+            month = dateRaw.getMonth() + 1;
+            date = dateRaw.getDate();
+            if (date < 10) {
+                date = '0' + date;
+            } if (month < 10) {
+                month = '0' + month;
+            }
+
+            keyData = String(date) + " / " + String(month) + " / " + String(year);
+        }
         const table_data = generateData(keyData);
         table_row.appendChild(table_data);
     }
-    const table_action = generateAction(data["CustomerID"]);
+    const table_action = generateAction(data["ProjectID"]);
     table_row.appendChild(table_action);
     return table_row;
 }
 function generateData(data) {
     const table_data = document.createElement('td');
     table_data.textContent = data;
-
     return table_data
 }
 function generateAction(ID) {
     const table_data = document.createElement('td');
     const edit_button = document.createElement('button');
+    const e_add_button = document.createElement('button');
+    const e_remove_button = document.createElement('button');
     const delete_button = document.createElement('button');
     //
     edit_button.addEventListener('click', handleEdit);
     delete_button.addEventListener('click', () => {
         if (confirm("Bạn chắc chắn muốn xóa ? Dữ liệu bị xóa sẽ ko thể được phục hồi")) {
-            deleteCustomer(ID);
+            deleteProject(ID);
         }
     })
+    e_add_button.addEventListener('click', handleAddEmployee);
+    e_remove_button.addEventListener('click', handleRemoveEmployee);
     //
     table_data.classList.add('action');
     edit_button.classList.add('edit_button');
     edit_button.setAttribute('id', `${ID}_edit`);
     delete_button.classList.add('delete_button');
     delete_button.setAttribute('id', `${ID}_delete`);
+    e_add_button.setAttribute('id', `${ID}_add`);
+    e_add_button.classList.add('add_e_button');
+    e_remove_button.setAttribute(`id`, `${ID}_remove`)
+    e_remove_button.classList.add('remove_e_button');
+
     //
     edit_button.innerHTML = '<i class="fas fa-edit"></i>';
     delete_button.innerHTML = '<i class="far fa-trash-alt"></i>';
+    e_add_button.innerHTML = '<i class="fas fa-user-plus"></i>';
+    e_remove_button.innerHTML = `<i class="fas fa-user-minus"></i>`;
+
     table_data.appendChild(edit_button);
+    table_data.appendChild(e_add_button);
+    table_data.appendChild(e_remove_button);
     table_data.appendChild(delete_button);
     return table_data;
 }
-
 function handleEdit(event) {
     const currentTarget = event.currentTarget;
     const idTarget = currentTarget.getAttribute('id');
-    console.log(idTarget);
+    console.log("---------" + idTarget);
     openEdit("edit", idTarget);
 }
 function openEdit(purpose, idName) {
@@ -101,19 +149,19 @@ function openEdit(purpose, idName) {
         close_button.remove();
     });
     if (purpose == "edit" && idName != "") {
-        title.textContent = 'Edit Customer';
+        title.textContent = 'Edit Project';
         const id = getIDFromName(idName);
         const idTextBox = edit_form.querySelector('.ID_input');
         idTextBox.value = id;
         autoInput(id);
         saveButton.addEventListener('click', () => {
-            editCustomer(id);
+            editProject(id);
         }, { once: true });
         edit_form.style.display = 'flex';
     }
     else if (purpose == "add") {
         console.log("open edit");
-        title.textContent = 'Add Customer';
+        title.textContent = 'Add Project';
         autoInput("clear");
         edit_form.style.display = 'flex';
         saveButton.addEventListener('click', () => {
@@ -146,39 +194,39 @@ function autoInput(ID) {
     if (ID != "clear") {
         const trow = document.querySelector(`#row_${ID}`);
         const keys = trow.querySelectorAll('td');
-        editTable.querySelector(".name_input").value = keys[1].textContent;
-        editTable.querySelector(".phone_input").value = keys[2].textContent;
-        editTable.querySelector(".email_input").value = keys[3].textContent;
-        editTable.querySelector(".address_input").value = keys[4].textContent;
+        editTable.querySelector(".nameP_input").value = keys[1].textContent;
+        editTable.querySelector(".price_input").value = keys[3].textContent.replace(/ /g, '');
+
     }
     else if (ID == "clear") {
-        editTable.querySelector(".name_input").value = "";
-        editTable.querySelector(".phone_input").value = "";
-        editTable.querySelector(".email_input").value = "";
-        editTable.querySelector(".address_input").value = "";
+        editTable.querySelector(".nameP_input").value = "";
+        editTable.querySelector(".price_input").value = "";
         editTable.querySelector(".ID_input").value = "Tự động tăng";
     }
 }
-async function editCustomer(id) {
-    url = "http://localhost:3000/client/edit";
+//fetch done => delete button
+async function editProject(id) {
+    url = "http://localhost:3000/project/edit";
     const editTable = document.querySelector('.edit_form');
-    const name = editTable.querySelector(".name_input").value;
-    const phone = editTable.querySelector(".phone_input").value;
-    const email = editTable.querySelector(".email_input").value;
-    const address = editTable.querySelector(".address_input").value;
-    if (validateInput(name, phone, email, address)) {
+    const nameP = editTable.querySelector(".nameP_input").value;
+    const nameC = editTable.querySelector("#customers").value;
+    const price = editTable.querySelector(".price_input").value;
+    const deadline = editTable.querySelector(".deadline_input").value;
+    if (validateInput(nameP, nameC, price, deadline)) {
         console.log("validated");
         const body = {};
+        body.purpose = 'add project'
         body.id = id;
-        body.name = name;
-        body.phone = phone;
-        body.email = email;
-        body.address = address;
+        body.title = nameP;
+        body.CustomerID = nameC.substring(nameC.indexOf("_") + 1, nameC.length);
+        body.price = price;
+        body.deadline = deadline;
         editTable.style.display = 'none';
+        console.log(body);
         const data = await fetchData(url, body);
         if (data.status == 'success') {
-            const save_button = document.querySelector('.save');
-            const delete_button = document.querySelector('.close');
+            const save_button = editTable.querySelector('.save');
+            const delete_button = editTable.querySelector('.close');
             save_button.remove();
             delete_button.remove();
             removeEventListener();
@@ -187,10 +235,12 @@ async function editCustomer(id) {
     } else {
         const saveButton = editTable.querySelector('.save_button');
         saveButton.addEventListener('click', () => {
-            editCustomer(id);
+            editProject(id);
         }, { once: true });
     }
 }
+
+
 
 function removeEventListener() {
     const edit_button = document.querySelector('.edit_button');
@@ -198,7 +248,6 @@ function removeEventListener() {
         edit_button.removeEventListener('click', handleEdit);
     }
 }
-
 function reloadTable() {
     const table = document.querySelectorAll('.t_row');
     table.forEach(element => {
@@ -206,60 +255,39 @@ function reloadTable() {
     })
     generateTable();
 }
-function validateInput(name, phone, email, address) {
+function validateInput(nameP, nameC, price, deadline) {
     let check = false;
-    if (name != null && name != "" && isNameValid(name)) {
+    if (nameP != null && nameP != "") {
         check = true;
     } else {
-        displayInvalid('Tên');
+        displayInvalid('Tên dự án');
         return false;
     }
-    if (phone != null && phone != "" && isPhoneValid(phone)) {
+    if (price != null && price != "" && isPriceValid(price)) {
         check = true;
     } else {
-        displayInvalid('Số điện thoại');
+        displayInvalid('Giá tiền');
         return false;
     }
-    if (email != null && email != "" && isEmailValid(email)) {
+    if (deadline != null && deadline != "") {
         check = true;
     } else {
-        displayInvalid('Email');
+        displayInvalid('Thời hạn');
         return false;
     }
-    if (address != null && address != "") {
+    if (nameC != null && nameC != "") {
         check = true;
     } else {
-        displayInvalid('Địa chỉ');
+        displayInvalid('Tên khách hàng');
         return false;
     }
     return check;
 
 }
-function removeAscent(str) {
-    if (str === null || str === undefined) return str;
-    str = str.toLowerCase();
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-    str = str.replace(/đ/g, "d");
-    return str;
-}
-function isNameValid(name) {
-    const re = /^((?=[a-z \']).)+$/i // regex here
-    return re.test(removeAscent(name))
-}
 
-function isPhoneValid(phone) {
-    const re = /^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$/g;
-    return re.test(phone);
-}
-
-function isEmailValid(email) {
-    const re = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm;
-    return re.test(email);
+function isPriceValid(price) {
+    const re = /^\$?\d+(,\d{3})*(\.\d*)?$/g;
+    return re.test(price);
 }
 function displayInvalid(str) {
     const invalid_div = document.querySelector('.invalid');
@@ -267,30 +295,29 @@ function displayInvalid(str) {
     message.textContent = `* Sai cú pháp tại ${str}`;
     invalid_div.style.display = 'block';
 }
-function addCustomer() {
+
+function addProject() {
     const add_button = document.querySelector(".add_btn");
     add_button.addEventListener('click', () => {
         openEdit('add', "");
     });
 }
 async function handleAddButton() {
-    url = "http://localhost:3000/client/add";
+    url = "http://localhost:3000/project/add";
     const editTable = document.querySelector('.edit_form');
-    const name = editTable.querySelector(".name_input").value;
-    const phone = editTable.querySelector(".phone_input").value;
-    const email = editTable.querySelector(".email_input").value;
-    const address = editTable.querySelector(".address_input").value;
-    if (validateInput(name, phone, email, address)) {
+    const nameP = editTable.querySelector(".nameP_input").value;
+    const nameC = editTable.querySelector("#customers").value;
+    const price = editTable.querySelector(".price_input").value;
+    const deadline = editTable.querySelector(".deadline_input").value;
+    if (validateInput(nameP, nameC, price, deadline)) {
         console.log("validated");
         const body = {};
-        body.name = name;
-        body.phone = phone;
-        body.email = email;
-        body.address = address;
+        body.title = nameP;
+        body.CustomerID = nameC.substring(nameC.indexOf("_") + 1, nameC.length);
+        body.price = price;
+        body.deadline = deadline;
         editTable.style.display = 'none';
-        console.log(body);
         const data = await fetchData(url, body);
-        console.log(data);
         if (data.status == 'success') {
             const save_button = document.querySelector('.save');
             const delete_button = document.querySelector('.close');
@@ -307,8 +334,8 @@ async function handleAddButton() {
     }
 }
 
-async function deleteCustomer(ID) {
-    url = "http://localhost:3000/client/delete";
+async function deleteProject(ID) {
+    url = "http://localhost:3000/project/delete";
     body = {
         id: `${ID}`
     };

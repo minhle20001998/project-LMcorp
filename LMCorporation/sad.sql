@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2020 at 06:03 PM
+-- Generation Time: Nov 24, 2020 at 04:40 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -55,13 +55,6 @@ CREATE TABLE `constract` (
   `CompanyID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `constract`
---
-
-INSERT INTO `constract` (`ContractID`, `Work_Hour`, `Role`, `Salary`, `EmployeeID`, `CompanyID`) VALUES
-(1, 8, 'Tester', 20000000, 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -71,6 +64,7 @@ INSERT INTO `constract` (`ContractID`, `Work_Hour`, `Role`, `Salary`, `EmployeeI
 CREATE TABLE `customer` (
   `CustomerID` int(11) NOT NULL,
   `Name` varchar(30) NOT NULL,
+  `PhoneNumber` varchar(15) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Address` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -79,9 +73,9 @@ CREATE TABLE `customer` (
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`CustomerID`, `Name`, `Email`, `Address`) VALUES
-(1, 'Le Minh', 'minhle20001998@gmail.com', '108 Cu Chinh Lan Thanh Xuan Ha Noi'),
-(2, 'Le Tuan Anh', 'lta@gmail.com', '108 Cu Chinh Lan Thanh Xuan Ha Noi');
+INSERT INTO `customer` (`CustomerID`, `Name`, `PhoneNumber`, `Email`, `Address`) VALUES
+(6, 'Le Tuan Minh', '0964660311', 'minhle2000@gmail.com', '48 Cu Chinh Lan Thanh Xuan Ha Noi'),
+(7, 'pham quochuy', '09194703239', 'huy@gmail.com', '113 kim ma');
 
 -- --------------------------------------------------------
 
@@ -103,9 +97,9 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`EmployeeID`, `Name`, `PhoneNumber`, `Email`, `DOB`, `Address`) VALUES
-(1, 'Pham Quoc Huy', '0999999999', 'minhle20001998@gmail.com', '2020-01-13', 'Hai Ba Trung'),
-(2, 'Le Tuan Minh', '0964460331', 'minhle20001998@gmail.com', '2020-01-13', '107 Thanh Xuan'),
-(3, 'Le Tuan Duc', '01639330587', 'minhle2000@gmail.com', '2020-01-13', '108 Huynh Thuc Khang');
+(20, 'Lê Tuấn Minh', '0964460331', 'minhle20001998@gmail.com', '2020-11-04', '108 Cù Chính Lan'),
+(23, 'Phạm Quốc Huy', '0954659598', 'huygreen@gmail.com', '2020-11-06', '56 Tạ Hiện'),
+(24, 'Nguyễn Quốc Khánh', '0964460331', 'knq2000@gmail.com', '2020-11-21', '155 Nguyen Ngoc Nai');
 
 -- --------------------------------------------------------
 
@@ -139,8 +133,7 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`ProjectID`, `Deadline`, `Price`, `Title`, `CustomerID`) VALUES
-(1, '2020-11-28', 1000, 'Employee Management System', 1),
-(2, '2020-11-27', 1250, 'system analysis and design', 2);
+(13, '2020-11-20', 7500, 'GTA 6', 7);
 
 -- --------------------------------------------------------
 
@@ -154,6 +147,15 @@ CREATE TABLE `project_team` (
   `EmployeeID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `project_team`
+--
+
+INSERT INTO `project_team` (`Project_team_ID`, `ProjectID`, `EmployeeID`) VALUES
+(1, 13, 20),
+(2, 13, 23),
+(3, 13, 24);
+
 -- --------------------------------------------------------
 
 --
@@ -161,16 +163,18 @@ CREATE TABLE `project_team` (
 --
 
 CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `Email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`username`, `password`) VALUES
-('minhle', '$2b$10$B6lyRylmbBwA9eLq6bJsbuM5DMD/DrzauS2Dl.obri9E6Mz6oJ0LG');
+INSERT INTO `user` (`user_id`, `username`, `password`, `Email`) VALUES
+(1, 'minhle', '$2b$10$B6lyRylmbBwA9eLq6bJsbuM5DMD/DrzauS2Dl.obri9E6Mz6oJ0LG', 'minhle20001998@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -225,6 +229,12 @@ ALTER TABLE `project_team`
   ADD KEY `FK_PT_EM` (`EmployeeID`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -244,13 +254,13 @@ ALTER TABLE `constract`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `performance`
@@ -262,13 +272,19 @@ ALTER TABLE `performance`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `ProjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ProjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `project_team`
 --
 ALTER TABLE `project_team`
-  MODIFY `Project_team_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Project_team_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

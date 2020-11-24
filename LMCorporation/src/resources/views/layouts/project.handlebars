@@ -4,15 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/employee.css" />
+    <link rel="stylesheet" href="/css/project.css" />
     <link href="//db.onlinewebfonts.com/c/860c3ec7bbc5da3e97233ccecafe512e?family=Circular+Std+Book" rel="stylesheet"
         type="text/css" />
-    <script src="/scripts/project.js" defer></script>
+    <script src="/scripts/project/fetch.js" defer></script>
+    <script src="/scripts/project/project.js" defer></script>
+    <script src="/scripts/project/addEmployee.js" defer></script>
     <script src="https://kit.fontawesome.com/26d4a64054.js" defer></script>
-    <title>Employee</title>
+    <title>Project</title>
 </head>
 
 <body>
+    <div class="add_form hidden">
+        <div class="add_table">
+            <div class="add_header">
+                <p>Quản lý nhân sự dự án</p>
+                {{!-- add button  --}}
+            </div>
+
+            <div class="add_body">
+
+                <div class="form_group">
+                    <p>
+                        {{!-- chọn employee để thêm/xóa --}}
+                    </p>
+                    <select name="employees" id="employees">
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
     <div class="edit_form">
         <div class="edit_table">
             <div class="edit_header">
@@ -25,32 +50,34 @@
             <div class="edit_body">
 
                 <div class="form_group">
-                    <p class="label">Tên
+                    <p class="label">Tên Dự Án
                         <span class="require">*</span>
 
                     </p>
-                    <input class="name_input" type="text">
+                    <input class="nameP_input" type="text">
                 </div>
                 <div class="form_group">
-                    <p class="label">Số điện thoại
+                    <p class="label">Tên Khách Hàng
                         <span class="require">*</span>
                     </p>
 
-                    <input class="phone_input" type="text">
+                    <select name="customers" id="customers">
+
+                    </select>
                 </div>
                 <div class="form_group">
-                    <p class="label">Email
+                    <p class="label">Giá dự án
                         <span class="require">*</span>
                     </p>
 
-                    <input class="email_input" type="text">
+                    <input class="price_input" type="text" placeholder="`$money` vd: $450">
                 </div>
                 <div class="form_group">
-                    <p class="label">Ngày Sinh
+                    <p class="label">Thời hạn
                         <span class="require">*</span>
 
                     </p>
-                    <input class="DOB_input" type="date">
+                    <input class="deadline_input" type="date">
                 </div>
                 <div class="form_group">
                     <p class="label">ID
@@ -59,13 +86,7 @@
                     </p>
                     <input class="ID_input" type="text" value="" readonly>
                 </div>
-                <div class="form_group">
-                    <p class="label">Địa Chỉ
-                        <span class="require">*</span>
 
-                    </p>
-                    <input class="address_input" type="text">
-                </div>
 
             </div>
             <div class="invalid">

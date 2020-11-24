@@ -5,6 +5,10 @@ const moment = require('moment');
 const saltRounds = 10;
 const timeOut = 10000000;
 class NewsController {
+
+    /*
+        controller for home page
+    */
     async index(req, res) {
 
         let employCount = 0;
@@ -57,10 +61,10 @@ class NewsController {
 
         })
     }
-    // news(req, res) {
-    //     res.render('news');
-    // }
 
+    /*
+        controller for login page
+    */
     login(req, res) {
         // console.log(req.body);
         if (Object.keys(req.body).length === 0) {
@@ -95,18 +99,115 @@ class NewsController {
 
     }
 
+    register(req, res) {
+        //object key to get object length;
+        if (Object.keys(req.body).length === 0) {
+            res.render('register', { layout: false });
+
+        } else {
+            const saltRounds = 10;
+            const salt = bcrypt.genSaltSync(saltRounds);
+            const reqUsername = req.body.username;
+            const reqPassword = req.body.password;
+            const reqEmail = req.body.email;
+
+            const hash = bcrypt.hashSync(reqPassword, salt);
+
+            // console.log(reqUsername);
+            const insertRegister = `INSERT INTO register_user(username,password,email)
+             VALUES ("${reqUsername}","${hash}","${reqEmail}")`;
+
+            db.query(insertRegister, (err, results, fields) => {
+                // console.log(reqPassword);
+                console.log("-----------------------");
+                console.log(results);
+                res.json({
+                    status: "success"
+                });
+
+            })
+        }
+
+    }
+
+    registerCheck(req, res) {
+        console.log(req.body);
+        if (req.body.target == "username") {
+            const queryUsername = `SELECT * FROM user WHERE username = "${req.body.username}"`
+            db.query(queryUsername, (err, usernames, fields) => {
+                console.log(usernames);
+                if (usernames.length == 0) {
+                    res.json({
+                        check: true
+                    });
+                } else {
+                    res.json({
+                        check: false
+                    })
+                }
+            })
+        }
+        if (req.body.target == "email") {
+            console.log(req.body);
+            const queryEmail = `SELECT * FROM user WHERE email = "${req.body.email}"`
+            db.query(queryEmail, (err, emails, fields) => {
+                if (emails.length == 0) {
+                    res.json({
+                        check: true
+                    });
+                } else {
+                    res.json({
+                        check: false
+                    })
+                }
+            })
+        }
+    }
+
+    /*
+        controller for employee page
+        @effects Render employee.handlebars with staff layout
+    */
     employee(req, res) {
         res.render('employee', { layout: 'staff' });
     }
+    /*
+        controller for customer page
+        @effects Render client.handlebars with customer layout
+    */
     client(req, res) {
         res.render('client', { layout: 'customer' });
     }
+    /*
+        controller for project page
+        @effects Render project.handlebars with project layout
+    */
     project(req, res) {
         res.render('project', { layout: 'project' });
     }
     //--------------------------//
+
+    /*
+        controller for employee page
+        @effects provides API for website to fetch data
+        @return Return all information of employees in database
+    */
     employeeAll(req, res) {
         const queryEmployee = 'SELECT * FROM employee';
+        const queryEmployeeName = `
+        SELECT  e.employeeID,name
+        FROM    employee e
+        LEFT JOIN project_team p
+        ON p.EmployeeID = e.EmployeeID
+        WHERE p.EmployeeID IS NULL
+        `;
+        const queryEmployeeProjectName = `
+        SELECT e.employeeID,name FROM employee AS e
+        INNER JOIN project_team AS p
+        ON e.employeeID = p.employeeID
+        WHERE p.projectID = ${req.body.id}
+        `;
+
         if (req.body.need == 'getAll') {
             db.query(queryEmployee, (err, dbEmployees, fields) => {
                 if (err) throw err;
@@ -114,9 +215,31 @@ class NewsController {
                 res.json(dbEmployees);
             })
         }
+        else if (req.body.need == `name all`) {
+            console.log("all-------------------");
+
+            db.query(queryEmployeeName, (err, dbEmployees, fields) => {
+                if (err) throw err;
+                res.json(dbEmployees);
+            })
+        }
+        else if (req.body.need == `name employee pTeam`) {
+            console.log("only-------------------");
+            db.query(queryEmployeeProjectName, (err, dbEmployees, fields) => {
+                if (err) throw err;
+                res.json(dbEmployees);
+            })
+        }
     }
+    /*
+        controller for client page
+        @effects provides API for website to fetch data
+        @return Return all information of customers in database
+
+    */
     clientAll(req, res) {
         const queryClientAll = 'SELECT * FROM customer';
+        const queryClientName = 'SELECT customerID, name FROM customer';
         if (req.body.need == `getAll`) {
             db.query(queryClientAll, (err, dbClient, fields) => {
                 if (err) throw err;
@@ -125,27 +248,43 @@ class NewsController {
                 res.json(dbClient);
             })
         }
+        else if (req.body.need = 'name') {
+            db.query(queryClientName, (err, dbClient, fields) => {
+                if (err) throw err;
+                // console.log(dbEmployees);
+                res.json(dbClient);
+            })
+        }
     }
 
+    /*
+        controller for project page
+        @effects provides API for website to fetch data
+        @return Return all information of projects in database
+
+    */
     projectAll(req, res) {
         const queryProjectAll = `SELECT p.ProjectID, title,c.name,price,deadline FROM project AS p
         INNER JOIN customer AS c
-        ON p.CustomerID = c.CustomerID;`;
+        ON p.CustomerID = c.CustomerID ORDER BY ProjectID;`;
         const result = [];
         // if (req.body.need == `getAll`) {
         db.query(queryProjectAll, (err, dbproject, fields) => {
             for (let i = 0; i < dbproject.length; i++) {
                 const project = dbproject[i];
+                console.log(project);
+
                 const projectID = project.ProjectID;
                 const employeeQuery =
                     `SELECT e.EmployeeID, name from employee AS e 
                     INNER JOIN project_team AS p 
                     ON e.EmployeeID = p.EmployeeID 
                     WHERE projectID = ${projectID}`;
+                console.log("------------------");
                 db.query(employeeQuery, (err, dbEmployees, fields) => {
                     if (err) throw err;
-                    dbproject[i].employees = dbEmployees;
                     console.log(project);
+                    dbproject[i].employees = dbEmployees;
                     result.push(project);
                     if (result.length == dbproject.length) {
 
@@ -187,6 +326,52 @@ class NewsController {
         })
     }
 
+    projectEdit(req, res) {
+        const editInfo = req.body;
+
+        if (editInfo.purpose == "add project") {
+            const date = new Date(editInfo.deadline).toISOString().slice(0, 19).replace('T', ' ');
+            let price = editInfo.price;
+            if ((price).includes("$")) {
+                price = price.substring(1, price.length);
+            } else {
+                price = editInfo.price;
+            }
+            const queryUpdate = `UPDATE project
+        SET Deadline = "${date}", Price = "${price}"
+        ,Title = "${editInfo.title}",CustomerID = "${editInfo.CustomerID}"
+        WHERE ProjectID = ${editInfo.id}
+        `
+            db.query(queryUpdate, (err, update, fields) => {
+                if (err) throw err;
+                res.json({
+                    status: "success"
+                });
+            })
+        }
+        if (editInfo.purpose == "edit add employee") {
+            const queryAddEmp = `INSERT INTO project_team (projectID, employeeID)
+            VALUES ("${editInfo.id}","${editInfo.EmployeeID}");
+            `
+            db.query(queryAddEmp, (err, update, fields) => {
+                if (err) throw err;
+                res.json({
+                    status: "success"
+                });
+            })
+        }
+
+        else if (editInfo.purpose == "edit remove employee") {
+            const queryRemoveEmp = `DELETE FROM project_team WHERE employeeID = ${editInfo.EmployeeID} `;
+            db.query(queryRemoveEmp, (err, update, fields) => {
+                if (err) throw err;
+                res.json({
+                    status: "success"
+                });
+            })
+        }
+    }
+
     employeeAdd(req, res) {
         const addInfo = req.body;
         const date = new Date(addInfo.DOB).toISOString().slice(0, 19).replace('T', ' ');
@@ -202,10 +387,29 @@ class NewsController {
 
     clientAdd(req, res) {
         const addInfo = req.body;
-        console.log(addInfo);
         const queryInsert = `INSERT INTO customer(Name,PhoneNumber,Email,Address)
         VALUES("${addInfo.name}","${addInfo.phone}","${addInfo.email}","${addInfo.address}");`;
         db.query(queryInsert, (err, update, fields) => {
+            if (err) throw err;
+            res.json({
+                status: "success"
+            })
+        })
+    }
+
+    projectAdd(req, res) {
+        const addInfo = req.body;
+        const date = new Date(addInfo.deadline).toISOString().slice(0, 19).replace('T', ' ');
+        let price = addInfo.price;
+        if ((price).includes("$")) {
+            price = price.substring(1, price.length);
+        } else {
+            price = addInfo.price;
+        }
+        const queryInsert = `INSERT INTO project(Deadline,Price,Title,CustomerID) VALUES
+        ("${date}","${price}","${addInfo.title}","${addInfo.CustomerID}");
+        `
+        db.query(queryInsert, (err, insert, fields) => {
             if (err) throw err;
             res.json({
                 status: "success"
@@ -233,18 +437,52 @@ class NewsController {
 
     clientDelete(req, res) {
         const deleteID = req.body.id;
-        const queryDelete =
-            `
-        DELETE FROM Project WHERE CustomerID = ${deleteID};
-        DELETE FROM Customer WHERE CustomerID =${deleteID};`;
+        const queryProjectID = `SELECT p.projectID from Project as p
+        INNER JOIN Customer AS c
+        ON p.customerID = c.customerID
+        WHERE c.customerID = ${deleteID};
+        `;
+        db.query(queryProjectID, (err, projectIDs, fields) => {
+            if (err) throw err;
+            for (let i = 0; i < projectIDs.length; i++) {
+                const pID = projectIDs[i]["projectID"];
+                const query = `DELETE FROM Project_team WHERE ProjectID = ${pID}`;
+                db.query(query, (err, deletePT, fields) => {
 
-        db.query(queryDelete, (err, deleteEmp, fields) => {
+                })
+            }
+            const queryDelete =
+                `
+            DELETE FROM Project WHERE CustomerID = ${deleteID};
+            DELETE FROM Customer WHERE CustomerID =${deleteID};
+            `;
+
+            db.query(queryDelete, (err, deleteCus, fields) => {
+                if (err) throw err;
+                res.json({
+                    status: "success"
+                })
+            })
+        })
+
+    }
+
+    projectDelete(req, res) {
+        const deleteID = req.body.id;
+        const queryDelete = `
+        DELETE FROM project_team WHERE projectID = "${deleteID}";
+        DELETE FROM project WHERE projectID = "${deleteID}";
+        `;
+        db.query(queryDelete, (err, deletePro, fields) => {
             if (err) throw err;
             res.json({
                 status: "success"
             })
         })
     }
+
+
+
 
 
 
