@@ -1,4 +1,4 @@
-const db = require(`../../config/db/db`);
+const db = require(`../../models/db/db`);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 // const db = dbService.getDBServiceInstance();
@@ -9,7 +9,7 @@ class NewsController {
     /*
         controller for home page
     */
-    async index(req, res) {
+    index(req, res) {
 
         let employCount = 0;
         let projectCount = 0;
@@ -62,6 +62,8 @@ class NewsController {
         })
     }
 
+
+
     /*
         controller for login page
     */
@@ -74,7 +76,7 @@ class NewsController {
             const reqUsername = req.body.username;
             const reqPassword = req.body.password;
             // console.log(reqUsername);
-            const queryPassword = "SELECT password FROM user WHERE username = 'minhle'"
+            const queryPassword = `SELECT password FROM user WHERE username = '${reqUsername}'`
             db.query(queryPassword, async (err, dbPassword, fields) => {
                 // console.log(reqPassword);
                 if (bcrypt.compareSync(reqPassword, dbPassword[0]['password'])) {
@@ -84,7 +86,6 @@ class NewsController {
                     res.json({
                         status: "OK",
                         redirect: "/"
-
                     });
                 } else {
                     // isLogin = false;
@@ -169,21 +170,93 @@ class NewsController {
         @effects Render employee.handlebars with staff layout
     */
     employee(req, res) {
-        res.render('employee', { layout: 'staff' });
+        res.render('table', {
+            layout: 'staff', title: "NHÂN VIÊN", isButton: true,
+            headers: [
+                { value: "ID", customClass: "title_id" },
+                { value: "Tên", customClass: "title_name" },
+                { value: "Số điện thoại", customClass: "title_phone" },
+                { value: "Email", customClass: "title_email" },
+                { value: "Ngày sinh", customClass: "title_dob" },
+                { value: "Địa chỉ", customClass: "title_address" },
+                { value: "Thao tác", customClass: "title_action" },
+            ]
+        });
+    }
+    /*
+        controller for access page
+        @effects Render access allowance page 
+    */
+    access(req, res) {
+        res.render('table', {
+            layout: 'registerAllow', title: "CẤP QUYỀN TRUY CẬP", isButton: false,
+            headers: [
+                { value: "ID", customClass: "title_id" },
+                { value: "Username", customClass: "title_name" },
+                { value: "Email", customClass: "title_email" },
+                { value: "Thao tác", customClass: "title_action" }
+            ]
+        });
+    }
+    /*
+    */
+    accessDecision(req, res) {
+        if (req.body.decision == "accept") {
+            const acceptQuery = `INSERT INTO user (username,password,email)
+                SELECT username,password,email FROM register_user WHERE register_id = ${req.body.ID};
+                DELETE FROM register_user WHERE register_id = ${req.body.ID};
+            `
+            db.query(acceptQuery, (err, decisions, fields) => {
+                res.json({
+                    status: "success"
+                })
+            })
+        }
+        else if (req.body.decision == "denied") {
+            const deniedQuery = `DELETE FROM register_user WHERE register_id = ${req.body.ID};`;
+            db.query(deniedQuery, (err, decisions, fields) => {
+                res.json({
+                    status: "success"
+                })
+            })
+        }
     }
     /*
         controller for customer page
         @effects Render client.handlebars with customer layout
     */
     client(req, res) {
-        res.render('client', { layout: 'customer' });
+        res.render('table', {
+            layout: 'customer', title: "KHÁCH HÀNG", isButton: true,
+            headers: [
+                { value: "ID", customClass: "title_id" },
+                { value: "Tên Khách Hàng", customClass: "title_name" },
+                { value: "Số điện thoại", customClass: "title_phone" },
+                { value: "Email", customClass: "title_email" },
+                { value: "Địa chỉ", customClass: "title_address" },
+                { value: "Thao tác", customClass: "title_action" },
+
+            ]
+        });
     }
     /*
         controller for project page
         @effects Render project.handlebars with project layout
     */
     project(req, res) {
-        res.render('project', { layout: 'project' });
+        res.render('table', {
+            layout: 'project', title: "DỰ ÁN", isButton: true,
+            headers: [
+                { value: "ID", customClass: "title_id" },
+                { value: "Tên Dự Án", customClass: "title_name" },
+                { value: "Tên Khách Hàng", customClass: "title_client" },
+                { value: "Giá dự án", customClass: "title_price" },
+                { value: "Thời hạn", customClass: "title_deadline" },
+                { value: "Nhân viên trong đội", customClass: "title_staff" },
+                { value: "Thao tác", customClass: "title_action" }
+
+            ]
+        });
     }
     //--------------------------//
 
@@ -295,6 +368,16 @@ class NewsController {
             }
         });
         // }
+    }
+
+    accessAll(req, res) {
+        if (req.need = 'getAll') {
+            const queryRegister = `SELECT register_id, username,email FROM register_user `;
+            db.query(queryRegister, (err, register, fields) => {
+                if (err) throw err;
+                res.json(register)
+            })
+        }
     }
 
     employeeEdit(req, res) {

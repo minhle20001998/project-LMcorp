@@ -48,7 +48,7 @@ async function registerFetch() {
             correct_p.textContent = 'Tài khoản đang đợi được duyệt';
 
         }
-        
+
     }
     else {
         console.log("valin");

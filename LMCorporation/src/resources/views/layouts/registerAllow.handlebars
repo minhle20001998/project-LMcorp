@@ -2,77 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/client.css" />
-    {{!-- <link href="//db.onlinewebfonts.com/c/860c3ec7bbc5da3e97233ccecafe512e?family=Circular+Std+Book" rel="stylesheet"
-        type="text/css" /> --}}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cấp quyền</title>
+    <link rel="stylesheet" href="/css/access.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <script src="/scripts/customer.js" defer></script>
+    {{!-- <script src="../../../public/scripts/home.js" defer></script> --}}
+    <script src="/scripts/project/fetch.js" defer></script>
+    <script src="/scripts/access.js" defer></script>
     <script src="https://kit.fontawesome.com/26d4a64054.js" defer></script>
-    <title>Khách Hàng</title>
 </head>
 
 <body>
-    <div class="edit_form">
-        <div class="edit_table">
-            <div class="edit_header">
-                <p></p>
-                {{!-- <button class="close">
-                    <i class="far fa-times-circle"></i>
-                </button> --}}
-            </div>
-
-            <div class="edit_body">
-
-                <div class="form_group">
-                    <p class="label">Tên
-                        <span class="require">*</span>
-
-                    </p>
-                    <input class="name_input" type="text" placeholder="1-30 kí tự">
-                </div>
-                <div class="form_group">
-                    <p class="label">Số điện thoại
-                        <span class="require">*</span>
-                    </p>
-
-                    <input class="phone_input" type="text" placeholder="9-15 kí tự">
-                </div>
-                <div class="form_group">
-                    <p class="label">Email
-                        <span class="require">*</span>
-                    </p>
-
-                    <input class="email_input" type="text" placeholder="1-50 kí tự">
-                </div>
-                <div class="form_group">
-                    <p class="label">ID
-                        <span class="require">*</span>
-
-                    </p>
-                    <input class="ID_input" type="text" value="" readonly>
-                </div>
-                <div class="form_group">
-                    <p class="label">Địa Chỉ
-                        <span class="require">*</span>
-
-                    </p>
-                    <input class="address_input" type="text" placeholder="1-100 kí tự">
-                </div>
-
-            </div>
-            <div class="invalid">
-                <p></p>
-            </div>
-            {{!-- <div class="save">
-                <button class="save_button">Save</button>
-            </div> --}}
-        </div>
-    </div>
     {{>header}}
     <section>
-
         <div class="left-col">
             <div class="background">
                 <div class="background-content">
@@ -124,21 +67,19 @@
                             <i class="fas fa-dot-circle"></i>
                             <a href="/project">Dự án</a>
                         </div>
-
+                        
                     </div>
                 </div>
-
+               
             </div>
         </div>
         <!--  -->
         <div class="right-col">
             {{{body}}}
-
         </div>
-
-
     </section>
     {{>footer}}
+
 </body>
 
 </html>

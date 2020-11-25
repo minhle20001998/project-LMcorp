@@ -257,13 +257,13 @@ function reloadTable() {
 }
 function validateInput(nameP, nameC, price, deadline) {
     let check = false;
-    if (nameP != null && nameP != "") {
+    if (nameP != null && nameP != "" && nameP < 100) {
         check = true;
     } else {
         displayInvalid('Tên dự án');
         return false;
     }
-    if (price != null && price != "" && isPriceValid(price)) {
+    if (price != null && price != "" && isPriceValid(price) && price.toString().length < 10) {
         check = true;
     } else {
         displayInvalid('Giá tiền');
@@ -275,7 +275,7 @@ function validateInput(nameP, nameC, price, deadline) {
         displayInvalid('Thời hạn');
         return false;
     }
-    if (nameC != null && nameC != "") {
+    if (nameC != null && nameC != "" && nameC.length < 30) {
         check = true;
     } else {
         displayInvalid('Tên khách hàng');

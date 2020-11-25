@@ -208,25 +208,25 @@ function reloadTable() {
 }
 function validateInput(name, phone, email, address) {
     let check = false;
-    if (name != null && name != "" && isNameValid(name)) {
+    if (name != null && name != "" && isNameValid(name)&& name.length < 30) {
         check = true;
     } else {
         displayInvalid('Tên');
         return false;
     }
-    if (phone != null && phone != "" && isPhoneValid(phone)) {
+    if (phone != null && phone != "" && isPhoneValid(phone)&& phone.length < 15) {
         check = true;
     } else {
         displayInvalid('Số điện thoại');
         return false;
     }
-    if (email != null && email != "" && isEmailValid(email)) {
+    if (email != null && email != "" && isEmailValid(email)&& email.length < 50) {
         check = true;
     } else {
         displayInvalid('Email');
         return false;
     }
-    if (address != null && address != "") {
+    if (address != null && address != ""&& address.length < 100) {
         check = true;
     } else {
         displayInvalid('Địa chỉ');

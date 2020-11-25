@@ -1,0 +1,23 @@
+<div class="top_bar">
+    <p class="welcome">{{title}}</p>
+    {{#if isButton}}
+    <button class="add_btn">
+        <i class="fas fa-plus"></i>
+        <p>Thêm</p>
+    </button>
+    {{/if}}
+
+
+
+</div>
+<div class="list_table">
+    <p>Bảng Danh Sách</p>
+
+    <table class="table">
+        <tr id="title_row">
+            {{#each headers}}
+            <th {{#if this.customClass}} id="{{this.customClass}}" {{/if}}>{{this.value}}</th>
+            {{/each}}
+        </tr>
+    </table>
+</div>

@@ -105,6 +105,7 @@ section {
 
 section .left-col {
   width: 20%;
+  max-width: 230px;
   height: auto;
   background-color: white; }
 
@@ -284,7 +285,7 @@ footer .para .contact_icon a {
   justify-content: space-between;
   align-items: center;
   padding: 2rem 5rem 0 5rem;
-  font-family: "CircularStd", sans-serif;
+  font-family: 'Roboto', sans-serif;
   word-spacing: 0.2rem; }
 
 .top_bar .welcome {
@@ -314,16 +315,16 @@ button {
 .top_bar i {
   font-size: 0.9rem; }
 
-.employee_table {
+.list_table {
   padding: 5rem 5rem 0 5rem; }
 
-.employee_table p {
+.list_table p {
   color: #1e262c;
   font-size: 1.2rem;
   margin-bottom: 0.5rem; }
 
 .table {
-  font-family: "CircularStd", sans-serif;
+  font-family: 'Roboto', sans-serif;
   border-collapse: collapse;
   width: 100%;
   font-size: 0.9rem;
@@ -440,7 +441,7 @@ tr:nth-child(odd) {
   font-size: 1rem; }
 
 .add_form {
-  font-family: "CircularStd", sans-serif;
+  font-family: 'Roboto', sans-serif;
   position: fixed;
   width: 100%;
   height: 100%;

@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const port = 3000;
 const path = require('path');
 const route = require(`./routes`);
-const dbService = require(`./config/db/db`);
+const dbService = require(`./models/db/db`);
 
 // const db = dbService.getDBServiceInstance();
 //template engine

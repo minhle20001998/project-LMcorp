@@ -363,6 +363,9 @@ tr:nth-child(odd) {
   justify-content: flex-end;
   border: none;
 }
+#title_action {
+  width: 5rem;
+}
 
 .table .action button {
   color: #1e262c;
@@ -370,99 +373,4 @@ tr:nth-child(odd) {
   background-color: transparent;
   border: none;
   cursor: pointer;
-}
-
-//edit
-
-.edit_form {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1500;
-  background-color: #1e262c4d;
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.edit_table {
-  width: 25rem;
-  height: 30rem;
-  padding: 1.5rem 0.5rem 1.5rem 1.2rem;
-  background-color: white;
-  z-index: 2000;
-}
-
-.edit_header {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  color: #1e262c;
-}
-
-.edit_header button {
-  position: absolute;
-  right: 0;
-  top: -1rem;
-}
-.edit_header p {
-  font-size: 1.5rem;
-}
-.edit_body {
-  margin-top: 2.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-}
-.invalid {
-  margin-top: 0.5rem;
-  color: red;
-  font-size: 1rem;
-  display: none;
-}
-
-.edit_body p {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-.edit_body p span {
-  color: red;
-}
-
-.edit_body .form_group {
-  margin: none;
-  flex: 0 0 50%;
-  max-width: 50%;
-  padding: 0 1rem 0 0;
-  margin: 0.5rem 0 1rem 0;
-}
-
-.edit_body .form_group input {
-  width: 100%;
-  height: 2rem;
-  border: 1px solid #e4e4e4;
-}
-.edit_body .form_group input:focus {
-  outline: none;
-}
-.edit_body .form_group .ID_input {
-  background-color: rgb(241, 241, 241);
-}
-
-.edit_table .save {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 7rem;
-}
-.edit_table .save button {
-  padding: 1rem 1.5rem 1rem 1.5rem;
-  border-radius: 0.5rem;
-  background-color: #1e262c;
-  color: white;
-  font-size: 1rem;
 }

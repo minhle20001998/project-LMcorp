@@ -85,22 +85,36 @@ async function EmpProject(purpose, id) {
     const add_form = document.querySelector('.add_form');
     const selectDiv = add_form.querySelector('select');
     const selected_employee = selectDiv.value;
-    const body = {};
-    body.id = id;
-    if (purpose == "add") {
-        body.purpose = "edit add employee";
+    console.log("------selected-------");
+    console.log(selected_employee);
+    if (selected_employee != "") {
+        const body = {};
+        body.id = id;
+        if (purpose == "add") {
+            body.purpose = "edit add employee";
+        }
+        else if (purpose == "remove") {
+            body.purpose = "edit remove employee";
+        }
+        body.EmployeeID = selected_employee.substring(selected_employee.indexOf("_") + 1, selected_employee.length);
+        console.log(body);
+        add_form.style.display = 'none';
+        removeOptions();
+        const data = await fetchData(url, body);
+        console.log("data");
+        console.log(data);
+        if (data.status == 'success') {
+            const e_save_button = add_form.querySelector('.save');
+            const e_delete_button = add_form.querySelector('.close');
+            e_save_button.remove();
+            e_delete_button.remove();
+            em_removeEventListener();
+            reloadTable();
+        }
     }
-    else if (purpose == "remove") {
-        body.purpose = "edit remove employee";
-    }
-    body.EmployeeID = selected_employee.substring(selected_employee.indexOf("_") + 1, selected_employee.length);
-    console.log(body);
-    add_form.style.display = 'none';
-    removeOptions();
-    const data = await fetchData(url, body);
-    console.log("data");
-    console.log(data);
-    if (data.status == 'success') {
+    else {
+        add_form.style.display = 'none';
+        removeOptions();
         const e_save_button = add_form.querySelector('.save');
         const e_delete_button = add_form.querySelector('.close');
         e_save_button.remove();
