@@ -134,33 +134,42 @@ class NewsController {
     registerCheck(req, res) {
         console.log(req.body);
         if (req.body.target == "username") {
-            const queryUsername = `SELECT * FROM user WHERE username = "${req.body.username}"`
-            db.query(queryUsername, (err, usernames, fields) => {
-                console.log(usernames);
-                if (usernames.length == 0) {
-                    res.json({
-                        check: true
-                    });
-                } else {
-                    res.json({
-                        check: false
-                    })
-                }
+            const queryUsernameUser = `SELECT * FROM user WHERE username = "${req.body.username}";`
+            const queryUsernameRegister = `SELECT * FROM register_user  WHERE username = "${req.body.username}";`
+
+            db.query(queryUsernameUser, (err, usernamesUser, fields) => {
+                db.query(queryUsernameRegister, (err, usernameRegister, fields) => {
+                    console.log(usernameRegister);
+                    if (usernamesUser.length == 0 && usernameRegister.length == 0) {
+                        res.json({
+                            check: true
+                        });
+                    } else {
+                        res.json({
+                            check: false
+                        })
+                    }
+                })
+
             })
         }
         if (req.body.target == "email") {
             console.log(req.body);
-            const queryEmail = `SELECT * FROM user WHERE email = "${req.body.email}"`
-            db.query(queryEmail, (err, emails, fields) => {
-                if (emails.length == 0) {
-                    res.json({
-                        check: true
-                    });
-                } else {
-                    res.json({
-                        check: false
-                    })
-                }
+            const queryEmailUser = `SELECT * FROM user WHERE email = "${req.body.email}"`
+            const queryEmailRegister = `SELECT * FROM register_user WHERE email = "${req.body.email}"`
+            db.query(queryEmail, (err, emailUser, fields) => {
+                db.query(queryEmailRegister, (err, emailRegister, fields) => {
+                    if (emailUser.length == 0 && emailRegister.length == 0) {
+                        res.json({
+                            check: true
+                        });
+                    } else {
+                        res.json({
+                            check: false
+                        })
+                    }
+                })
+
             })
         }
     }
@@ -563,14 +572,6 @@ class NewsController {
             })
         })
     }
-
-
-
-
-
-
-
-
 
 }
 

@@ -51,7 +51,6 @@ async function registerFetch() {
 
     }
     else {
-        console.log("valin");
     }
 }
 
@@ -86,10 +85,10 @@ async function validateRegister(uName, email, pw) {
     }
 
     if (email != null && email != "" && email.length < 50 && isEmailValid(email) && (await isEmailExist(email) == true)) {
-
+        console.log("valid emaillll")
         check = true;
     }
-    else if (email = "") {
+    else if (email == "") {
         console.log("email ngắn");
         addStatus('* Email quá ngắn');
         return false;

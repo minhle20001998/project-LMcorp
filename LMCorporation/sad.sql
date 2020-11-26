@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2020 at 03:18 PM
+-- Generation Time: Nov 26, 2020 at 05:29 PM
 -- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -74,7 +74,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Name`, `PhoneNumber`, `Email`, `Address`) VALUES
-(8, 'Lê Tuấn Minh', '0964460331', 'minhle20001998@gmail.com', '108 Cù Chính Lan Thanh Xuân');
+(12, 'Lê Quang Vinh', '0194456578', 'vinkwang@gmail.com', '64 Trần Hưng Đạo'),
+(13, 'Hoàng Trung Hiếu', '0867460351', 'hieuthuhai@gmail.com', '45 Huỳnh Thúc Khoáng'),
+(14, 'Lê Đức Long', '0174854362', 'longwibu@gmail.com', '1405 Tòa Nhà Artemis');
 
 -- --------------------------------------------------------
 
@@ -96,7 +98,7 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`EmployeeID`, `Name`, `PhoneNumber`, `Email`, `DOB`, `Address`) VALUES
-(20, 'Lê Tuấn Em', '0964460331', 'minhle20001998@gmail.com', '2000-09-24', '108 Cù Chính Lan'),
+(20, 'Lê Tuấn Minh', '0964460331', 'minhle20001998@gmail.com', '2000-09-24', '108 Cù Chính Lan'),
 (23, 'Phạm Quốc Huy', '0954659598', 'huygreen@gmail.com', '2020-11-06', '56 Tạ Hiện'),
 (24, 'Nguyễn Quốc Khánh', '0964460331', 'knq2000@gmail.com', '2020-11-21', '155 Nguyen Ngoc Nai');
 
@@ -132,8 +134,9 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`ProjectID`, `Deadline`, `Price`, `Title`, `CustomerID`) VALUES
-(15, '2020-11-27', 7500, 'GTA 6', 8),
-(16, '2020-11-19', 7500, 'GTA 4 ', 8);
+(20, '2022-06-06', 15000, 'Read Dead Redemption 3', 14),
+(21, '2023-05-09', 18000, 'GTA 6', 12),
+(22, '2021-02-18', 750, 'Project Management System', 12);
 
 -- --------------------------------------------------------
 
@@ -152,9 +155,29 @@ CREATE TABLE `project_team` (
 --
 
 INSERT INTO `project_team` (`Project_team_ID`, `ProjectID`, `EmployeeID`) VALUES
-(15, 15, 20),
-(16, 15, 23),
-(17, 15, 24);
+(24, 20, 20),
+(25, 21, 24),
+(26, 22, 23);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `register_user`
+--
+
+CREATE TABLE `register_user` (
+  `register_id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `register_user`
+--
+
+INSERT INTO `register_user` (`register_id`, `username`, `password`, `email`) VALUES
+(11, 'vinkwang', '$2b$10$Cw9in9HZqyPN7C8vRM8RzeihBXbGJgtRzIcTUED0eSTxazsRfmsPm', 'vinkwang@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -175,8 +198,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `Email`) VALUES
 (1, 'minhle', '$2b$10$B6lyRylmbBwA9eLq6bJsbuM5DMD/DrzauS2Dl.obri9E6Mz6oJ0LG', 'minhle20001998@gmail.com'),
-(4, 'huygreen', '$2b$10$gl3mXDNvfPQmu166Z2qME.FnVnbwQ6VZhEhJSiPYuhrehbEhyxZDO', 'huygreen@gmail.com'),
-(6, 'vinkwang', '$2b$10$8Hu.F2jQn4FBGUhVvAZCIuOhg1PsjxAEVTm1c7hSHqk32tHYU/aj.', 'vinkwang2000@gmail.com');
+(7, 'huygreen', '$2b$10$mCQbfqFZ/OOMfpfVDUeaX.f01.SInzayK5fR6DTdUWO670.zErZdC', 'huygreen@gmail.com'),
+(8, 'vinhkwang', '$2b$10$.z7JfqxFYAH9JxtBzA5eeOZzHt5xeT8ZN64e9kSrP1uET5qGqm6PC', 'vinh@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -231,6 +254,12 @@ ALTER TABLE `project_team`
   ADD KEY `FK_PT_EM` (`EmployeeID`);
 
 --
+-- Indexes for table `register_user`
+--
+ALTER TABLE `register_user`
+  ADD PRIMARY KEY (`register_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -256,13 +285,13 @@ ALTER TABLE `constract`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `performance`
@@ -274,19 +303,25 @@ ALTER TABLE `performance`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `ProjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ProjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `project_team`
 --
 ALTER TABLE `project_team`
-  MODIFY `Project_team_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `Project_team_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `register_user`
+--
+ALTER TABLE `register_user`
+  MODIFY `register_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
