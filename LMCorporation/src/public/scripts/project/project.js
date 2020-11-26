@@ -257,7 +257,7 @@ function reloadTable() {
 }
 function validateInput(nameP, nameC, price, deadline) {
     let check = false;
-    if (nameP != null && nameP != "" && nameP < 100) {
+    if (nameP != null && nameP != "" && nameP.length < 100) {
         check = true;
     } else {
         displayInvalid('Tên dự án');
