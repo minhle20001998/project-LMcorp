@@ -55,7 +55,7 @@ function generateRow(data) {
         if (key == "employees") {
             let stringEmloyee = "";
             data[key].forEach(element => {
-                const employee = element.name + "-" + element.EmployeeID;
+                const employee = element.name + "-" + element.employeeID;
                 stringEmloyee += employee + ", ";
                 console.log(stringEmloyee);
             })
@@ -215,7 +215,7 @@ async function editProject(id) {
     if (validateInput(nameP, nameC, price, deadline)) {
         console.log("validated");
         const body = {};
-        body.purpose = 'add project'
+        body.purpose = 'edit project'
         body.id = id;
         body.title = nameP;
         body.CustomerID = nameC.substring(nameC.indexOf("_") + 1, nameC.length);
